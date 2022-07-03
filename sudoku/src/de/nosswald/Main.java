@@ -18,7 +18,7 @@ public class Main {
 
     public void run() {
         sudoku = new Sudoku();
-        window = new Window();
+        window = new Window(sudoku);
     }
 
     public Sudoku getSudoku() {
