@@ -7,6 +7,10 @@ public class Sudoku {
 
     private int[][] field;
 
+    /**
+     * initializes the field with the "hardest sudoku":
+     * <a href="https://www.conceptispuzzles.com/de/index.aspx?uri=info/article/424">https://www.conceptispuzzles.com/de/index.aspx?uri=info/article/424</a>
+     */
     public Sudoku() {
         field = new int[][] {
                 { 8, 0, 0,  0, 0, 0,  0, 0, 0 },
@@ -23,16 +27,35 @@ public class Sudoku {
         };
     }
 
+    /**
+     * clears the entire field
+     */
+    public void clear() {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++)
+                field[row][col] = 0;
+        }
+    }
+
+    /**
+     * @return if the field is completely filled up
+     */
     public boolean isDone() {
-        for (int row = 0; row < 9; ++row) {
-            for (int column = 0; column < 9; ++column) {
-                if (field[row][column] == 0)
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (field[row][col] == 0)
                     return false;
             }
         }
         return true;
     }
 
+    /**
+     * @param row       the row
+     * @param number    number from 1 to 9
+     *
+     * @return if the given number is present in the given row
+     */
     public boolean isInRow(int row, int number) {
         for (int i = 0; i < 9; i++) {
             if (field[row][i] == number)
@@ -41,20 +64,34 @@ public class Sudoku {
         return false;
     }
 
-    public boolean isInColumn(int column, int number) {
+    /**
+     * @param col       the col
+     * @param number    number from 1 to 9
+     *
+     * @return if the given number is present in the given column
+     */
+    public boolean isInCol(int col, int number) {
         for (int i = 0; i < 9; i++) {
-            if (field[i][column] == number)
+            if (field[i][col] == number)
                 return true;
         }
         return false;
     }
 
-    public boolean isInBox(int row, int column, int number) {
+    /**
+     * @param row       the row
+     * @param col       the col
+     * @param number    number from 1 to 9
+     *
+     * @return if the given number is present in the given 3x3 box
+     */
+    public boolean isInBox(int row, int col, int number) {
+        // calc box
         row = row - row % 3;
-        column = column - column % 3;
+        col = col - col % 3;
 
-        for (int r = row; r < row + 3; ++r) {
-            for (int c = column; c < column + 3; c++) {
+        for (int r = row; r < row + 3; r++) {
+            for (int c = col; c < col + 3; c++) {
                 if (field[r][c] == number)
                     return true;
             }
@@ -62,18 +99,21 @@ public class Sudoku {
         return false;
     }
 
-    public boolean isValid(int row, int column, int number) {
-        return !isInRow(row, number) && !isInColumn(column, number) && !isInBox(row, column, number);
+    /**
+     * @param row       the row
+     * @param col       the col
+     * @param number    number from 1 to 9
+     *
+     * @return if the given number is not present in either the given row, col or box
+     */
+    public boolean isValid(int row, int col, int number) {
+        return !isInRow(row, number) && !isInCol(col, number) && !isInBox(row, col, number);
     }
 
+    /**
+     * @return the field (empty slots are marked as zero)
+     */
     public int[][] getField() {
         return field;
-    }
-
-    public void clear() {
-        for (int row = 0; row < 9; ++row) {
-            for (int column = 0; column < 9; ++column)
-                field[row][column] = 0;
-        }
     }
 }

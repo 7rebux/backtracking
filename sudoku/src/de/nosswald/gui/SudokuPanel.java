@@ -20,9 +20,14 @@ public class SudokuPanel extends JPanel {
 
     private int selectedRow, selectedCol = -1;
 
+    /**
+     * @param sudoku the sudoku to render
+     */
     public SudokuPanel(Sudoku sudoku) {
         this.sudoku = sudoku;
         this.solver = new Solver(this);
+
+        // default dela
         solver.setDelay(20);
 
         this.addMouseListener(new MouseAdapter() {
@@ -36,8 +41,8 @@ public class SudokuPanel extends JPanel {
                     selectedRow = e.getY() / 50;
                 }
 
-                repaint();
-                requestFocus();
+                repaint(); // repaint to update the selected tile
+                requestFocus(); // needed for the key listener to work
             }
         });
 
@@ -50,12 +55,17 @@ public class SudokuPanel extends JPanel {
                     else
                         sudoku.getField()[selectedRow][selectedCol] = 0;
 
-                    repaint();
+                    repaint(); // paint the new number
                 }
             }
         });
     }
 
+    /**
+     * tries to solve the sudoku
+     *
+     * @return if the solving was successfully
+     */
     public boolean trySolve() {
         if (!sudoku.isDone())
             return solver.solve();
